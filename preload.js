@@ -1,4 +1,50 @@
 // ==============================
+// 🔎 FILTER UTILITIES
+// ==============================
+
+/**
+ * Finds the row with the smallest value in a given column.
+ *
+ * @param {object} queryData - Column-oriented Retool query result
+ * @param {string} fieldName - The column name to evaluate
+ * @returns {object|null} Row object with the smallest value, or null if invalid
+ */
+function filterSmallest(queryData, fieldName) {
+  if (!queryData || typeof queryData !== 'object') return null;
+  if (!queryData[fieldName]) {
+    console.error(`Field "${fieldName}" not found in query data`);
+    return null;
+  }
+
+  const rows = transformToRows(queryData);
+  return rows.reduce((minRow, row) => {
+    if (!minRow) return row;
+    return row[fieldName] < minRow[fieldName] ? row : minRow;
+  }, null);
+}
+
+/**
+ * Finds the row with the largest value in a given column.
+ *
+ * @param {object} queryData - Column-oriented Retool query result
+ * @param {string} fieldName - The column name to evaluate
+ * @returns {object|null} Row object with the largest value, or null if invalid
+ */
+function filterLargest(queryData, fieldName) {
+  if (!queryData || typeof queryData !== 'object') return null;
+  if (!queryData[fieldName]) {
+    console.error(`Field "${fieldName}" not found in query data`);
+    return null;
+  }
+
+  const rows = transformToRows(queryData);
+  return rows.reduce((maxRow, row) => {
+    if (!maxRow) return row;
+    return row[fieldName] > maxRow[fieldName] ? row : maxRow;
+  }, null);
+}
+
+// ==============================
 // 📊 DATA TRANSFORMATION UTILITIES
 // ==============================
 
